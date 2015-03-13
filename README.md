@@ -12,7 +12,7 @@ Antes de empezar debemos de definir las entidades básicas para ser utilizadas c
 ### User.php:
 
 ```
-#!php
+
 
 <?php
 namespace Test\LoginBundle\Entity;
@@ -204,7 +204,7 @@ public function eraseCredentials() {
 ### Role.php:
 
 ```
-#!php
+
 
 <?php
  
@@ -277,7 +277,7 @@ public function __toString() {
 ```
 Una vez creadas nuestras entidades, accedemos a la consola de Symfony2 y generamos las tablas en Base de Datos:
 ```
-#!php
+
 	$ app/console doctrine:schema:update –force
 ```
 Paso 2: Generando los CRUD’s
@@ -285,7 +285,7 @@ Paso 2: Generando los CRUD’s
 
 Una vez creadas las entidades en DB, procedemos a crear los CRUD’s desde la consola de symfony:
 ```
-#!php
+
 	$ app/console doctrine:generate:crud
 ```
 Seguimos los pasos colocando TestLoginBundle:Role, luego nos solicita si deseamos crear las opciones de escritura, le decimos “yes” (sí), formato del CRUD: annotation, y finalmente en el Routes prefix colocamos /admin/role, este paso es importante porque a la ruta le asignamos el prefijo /admin para que nos permita empatar luego con el access_control, confirmamos y aparecerá el mensaje “You can now start using the generated code!”
@@ -294,7 +294,7 @@ Procedemos a aplicar lo mismo pero en este caso con TestLoginBundle:User y en Ro
 
 Ahora añadiremos las rutas a nuestro archivo de rutas (loginbundle/src/Test/LoginBundle/Resources/Config/routing.yml),
 ```
-#!php
+
 	TestAnnotations:
 		resource: “@TestLoginBundle/Controller/”
 		prefix:   /
@@ -312,7 +312,7 @@ Primero añadiremos la siguiente función en el controlador de usuarios:
 Luego modificamos las funciones de las acciones correspondientes a create y update, añadiendo la llamada al la función anterior para establecer el hash de la contraseña con el algoritmo SHA512:
 
 ```
-#!php
+
 
 // loginbundle/src/Test/LoginBundle/Controller/UserController.php
 
@@ -383,7 +383,7 @@ public function updateAction(Request $request, $id)
 Luego dentro de este mismo controlado UserController.php agregas la función setSecurePassword:private
 
 ```
-#!php
+
 private function setSecurePassword(&$entity) 
 {
 	$entity->setSalt(md5(time()));
@@ -396,7 +396,7 @@ private function setSecurePassword(&$entity)
 Por último sólo nos queda eliminar del formulario (src/Test/LoginBundle/Form/UserType.php) el campo salt el cual no debe ser modificado por el usuario:
 
 ```
-#!php
+
 	
 <?php
 // loginbundle/src/Test/LoginBundle/Form/UserType.php
@@ -420,7 +420,7 @@ Paso 3: Creando el esquema de seguridad
 
 Ahora procedemos a sobreescribir nuestro esquema de seguridad (loginBundle/app/config/security.yml), recomiendo que antes de hacerlo guardes una copia del security.yml.
 ```
-#!php
+
 # loginBundle /app/config/security.yml
 security:
     encoders:
@@ -470,7 +470,7 @@ Para culminar sólo necesitamos crear el controlador y vista para nuestro login,
 
 SecurityController.php
 ```
-#!php
+
 
 <?php
 // loginBundle/src/Test/LoginBundle/Controller/SecurityController.php
@@ -527,7 +527,7 @@ Ahora crea el directorio “Security” dentro de (loginBundle/src/MDW/BlogBundl
 login.html.twig
 
 ```
-#!php
+
 {# loginbundle/src/Test/loginBundle/Resources/views/Security/login.html.twig #}
 {% if error %}
 <div>{{ error.message }}</div>
@@ -551,7 +551,7 @@ En esta ocasión apreciamos el complejo sistema de seguridad de Symfony2, en don
 Además interactuamos con dicho sistema a través de un “rápido” tutorial que nos permitió resolver las inquietudes más directas en cuanto a creación de un básico RBAC (Role-based Access Control), reitero que no es la única forma de hacerlo y que existen muchos Bundles Prefabricados como el FOSUserBundle que nos facilita enormemente ésta tarea, pero si no se conoce debidamente la base puede resultar una verdadera caja negra el usar un Bundle sin el previo conocimiento de como Symfony2 implementa tales mecanismos.
 
 ```
-#!php
+
 Usuario Administrador: admin
 Password Usuario Administrador: uprueba1
 Usuario: user
