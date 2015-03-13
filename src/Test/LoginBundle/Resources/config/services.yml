@@ -1,0 +1,7 @@
+parameters:
+#    test_login.example.class: Test\LoginBundle\Example
+
+services:
+#    test_login.example:
+#        class: %test_login.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

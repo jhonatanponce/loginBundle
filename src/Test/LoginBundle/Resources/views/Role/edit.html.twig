@@ -1,0 +1,36 @@
+{% extends '::base.html.twig' %}
+    
+{% block body -%}
+<div class="row">
+    <div class="col-md-12">
+        <div class="page-header-sector">
+            <div class="row">
+                <div class="col-md-12 breadcrumb-bar">
+                    <ol class="breadcrumb">
+                        <li><a href="{{ url('test_login_homepage')}}">Hompage</a></li>
+                        <li><a href="{{ url('admin_role')}}">Rol</a></li>
+                        <li class="active">Editar Rol</li>
+                    </ol>								
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="page-content-sector">
+            <div class="row">
+                <h1>Editar Rol</h1>
+                 {{ form(edit_form) }}
+            </div>
+        </div>
+        <div class="text-center">
+            <div class="options-buttons-box">
+                {{ form(delete_form) }}
+                <a href="{{ path('admin_role') }}" class="btn btn-default" role="button">Regresar</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block javascripts %}
+{% endblock %}

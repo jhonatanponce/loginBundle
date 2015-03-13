@@ -1,0 +1,51 @@
+{% extends '::base.html.twig' %}
+    
+{% block body -%}
+<div class="row">
+    <div class="col-md-12">
+        <div class="page-header-sector">
+            <div class="row">
+                <div class="col-md-12 breadcrumb-bar">
+                    <ol class="breadcrumb">
+                        <li><a href="{{ url('test_login_homepage')}}">Hompage</a></li>
+                    </ol>								
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-md-12">
+    <div class="page-content-sector">
+        <div class="row">
+            <div class="jumbotron">
+                    <p>Bienvenidos al LoginBundle</p>
+                    <p>Este es un bundle sencillo para hacer el mini-backend de registros de usuarios usando doctrine y librerías Sf2</p>
+                    <p>Está página no requiere credenciales (es de acceso público)</p>
+                    <p>Si no estas logeado al hacer click en los botones siguientes se te pedira que te identifiques.<br>
+                        Si importaste la base de datos adjunta en el repositorio los usuarios son:<br>
+                    <strong>Usuario Administrador:</strong> admin<br>
+                    <strong>Password Usuario Administrador:</strong> uprueba1<br>
+                    <strong>Usuario:</strong> user<br>
+                    <strong>Password Usuario:</strong> uprueba2<br>
+                    Solo el usuario administrador tiene acceso a crear, editar, eliminar y ver los registros
+                    </p>
+                    <div class="text-center">
+                        <div class="options-buttons-box">
+                            <a href="{{ path('admin_user') }}" class="btn btn-primary btn-lg" role="button">Usuarios</a>
+                            <a href="{{ path('admin_role') }}" class="btn btn-primary btn-lg" role="button">Roles</a>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block javascripts %}
+{{ parent() }}
+    <script type="text/javascript">
+        $(function(){
+            //$('#registro_user_roles').attr('name','consalud_securitybundle_user[user_roles][]');
+            $('#registro_user_roles').removeAttr('multiple');
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>{% block title %}.:: LoginBundle ::.{% endblock %}</title>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <link rel="apple-touch-icon-precomposed" href="{{ asset('bundles/login/images/ios_icon_57.png') }}">
+        {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('bundles/login/css/bootstrap.css') }}">
+        <style>
+        #footer-zone{
+        background-color: #4F4F4F;
+        color: #bbbbbb;
+        padding: 10px 20px;
+        margin-top: 30px;
+        }
+        #header-zone .navigation-header-sector {
+        height: 93px;
+        background-position: left bottom;
+        border-bottom: 4px #2696D0 solid;
+        }
+        ul, menu, dir {
+        display: block;
+        list-style-type: disc;
+        -webkit-margin-before: 1em;
+        -webkit-margin-after: 1em;
+        -webkit-margin-start: 0px;
+        -webkit-margin-end: 0px;
+        -webkit-padding-start: 40px;
+        }
+        li {
+        display: list-item;
+        text-align: -webkit-match-parent;
+        }
+        #header-zone .navigation-header-sector .navigation-bar ul.menu-small {
+        right: 20px;
+        top: 5px;
+        list-style: none;
+        position: absolute;
+        }
+        .breadcrumb-bar {
+        top: 10px;
+        }
+        .breadcrumb > .active {
+        color: #777;
+        }
+        .breadcrumb > li {
+        display: inline-block;
+        }
+        /* LOGIN */
+body.signin {
+	//background-color:#F3F3F3;
+	height:100%;
+}
+body.signin .main-container {
+	position:relative;
+	height:100%;
+	width:100%;
+	display:table;
+        margin-top:200px;
+}
+.form-signin{
+	width:400px;
+	display:table-cell;
+	vertical-align:middle;
+	margin:auto;
+}
+.form-signin h2 {
+	text-align:center;
+	margin-bottom:30px;
+}
+.form-signin img {
+	max-width:300px;
+}
+.form-signin h2 span {
+	display:none;
+}
+.form-signin .username-box,
+.form-signin .password-box {
+	margin-bottom:10px;
+}
+        </style>
+        {% endblock %}
+    </head>
+{#<body class="signin" onload="noBack();" onpageshow="if (event.persisted) noBack();" onunload="">#}
+    <body class="signin">
+        <div class="container">
+            <div id="header-zone">
+                <div class="row">
+                    <div class="col-md-12">					
+                        <header>
+                            <div class="header-desktop hidden-xs">
+                                <div class="institutional-header-box hidden-xs">
+                                    <div class="row">
+                                        <div class="col-sm-12 row">
+                                            <img alt="Jhonatan Ponce" src="{{ asset('bundles/login/images/JhonatanPonce-Branding-ColorFull1.png') }}" class="pull-right" style="padding-top:10px;">
+                                        </div>
+                                    </div>
+                                </div><!-- .institutional-header-box -->
+                            </div><!-- .header-desktop .hidden-xs -->
+                        </header>									
+                    </div>
+                </div>		
+            </div><!-- #header-zone -->
+            
+            <div class="container-fluid main-container">
+            {% block body %}{% endblock %}
+            {% block javascripts %}
+                <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+                <script type="text/javascript" src="{{ asset('bundles/login/js/jquery.js') }}"></script>
+                <script type="text/javascript" src="{{ asset('bundles/login/js/bootstrap.min.js') }}"></script>
+            {% endblock %}
+            </div>
+            <div id="footer-zone" class="col-md-12">
+                <div class="row">
+                    <div class="col-md-12">					
+                        <div class="credits-sector">
+                            <div class="row">
+                                <div class="col-md-6 legal-bar">LoginBundle</div>
+                                <div class="col-md-6 developer-bar">Diseño y Desarrollo por <strong><a href="http://ponceelrelajado.tumblr.com" target="_blank">Jhontan Ponce</a></strong></div>
+                            </div>
+                        </div><!-- .credits-sector -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

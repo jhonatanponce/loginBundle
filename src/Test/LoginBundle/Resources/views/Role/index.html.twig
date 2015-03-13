@@ -1,0 +1,56 @@
+{% extends '::base.html.twig' %}
+    
+{% block body -%}
+<div class="row">
+    <div class="col-md-12">
+        <div class="page-header-sector">
+            <div class="row">
+                <div class="col-md-12 breadcrumb-bar">
+                    <ol class="breadcrumb">
+                        <li><a href="{{ url('test_login_homepage')}}">Hompage</a></li>
+                        <li class="active">Rol</li>
+                    </ol>								
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="page-content-sector">
+            <div class="row">
+                <h1>Listado de Roles</h1>
+                 <table class="table table-hover table-responsive table-striped">
+                    <thead>
+                        <tr>
+                            <th class="text-center">Id</th>
+                            <th class="text-center">Name</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for entity in entities %}
+                        <tr>
+                            <td class="text-center"><a href="{{ path('admin_role_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                            <td class="text-center"><a href="{{ path('admin_role_show', { 'id': entity.id }) }}">{{ entity.name }}</a></td>
+                            <td class="text-center">
+                                <a href="{{ path('admin_role_show', { 'id': entity.id }) }}" class="glyphicon glyphicon-search"></a>
+                                &nbsp;|&nbsp;
+                                <a href="{{ path('admin_role_edit', { 'id': entity.id }) }}" class="glyphicon glyphicon-pencil"></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="text-center">
+            <div class="options-buttons-box">
+                <a href="{{ path('admin_role_new') }}" class="btn btn-primary  btn-lg" role="button">Crear Nuevo Rol</a>
+                <a href="{{ path('test_login_homepage') }}" class="btn btn-default btn-lg" role="button">Regresar</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block javascripts %}
+{% endblock %}

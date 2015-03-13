@@ -1,0 +1,48 @@
+{% extends '::base.html.twig' %}
+    
+{% block body -%}
+<div class="row">
+    <div class="col-md-12">
+        <div class="page-header-sector">
+            <div class="row">
+                <div class="col-md-12 breadcrumb-bar">
+                    <ol class="breadcrumb">
+                        <li><a href="{{ url('test_login_homepage')}}">Hompage</a></li>
+                        <li><a href="{{ url('admin_user')}}">Usuarios</a></li>
+                        <li class="active">Detalle Usuario</li>
+                    </ol>								
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="page-content-sector">
+            <div class="row">
+                <h1>Detalle Usuario</h1>
+                <table class="records_list table table-bordered table-striped table-hover" border="1">
+                    <tbody>
+                        <tr>
+                            <th>Id</th>
+                            <td>{{ entity.id }}</td>
+                        </tr>
+                        <tr>
+                            <th>Username</th>
+                            <td>{{ entity.username }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="text-center">
+            <div class="options-buttons-box inline">
+                {{ form(delete_form) }}
+                <a href="{{ path('admin_user_edit', { 'id': entity.id }) }}" class="btn btn-info">Modificar</a>
+                <a href="{{ path('admin_user') }}" class="btn btn-default" role="button">Regresar</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block javascripts %}
+{% endblock %}

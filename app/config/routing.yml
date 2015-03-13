@@ -1,0 +1,4 @@
+test_login:
+    resource: "@TestLoginBundle/Resources/config/routing.yml"
+    prefix:   /
+

@@ -1,0 +1,7 @@
+test_login_homepage:
+    path:     /
+    defaults: { _controller: TestLoginBundle:Default:index }
+TestAnnotations:
+    resource: "@TestLoginBundle/Controller/"
+    prefix:   /
+    type:     annotation

@@ -1,0 +1,13 @@
+{% extends '::base_login.html.twig' %}
+{% block body -%}
+{% if error %}
+    <div class="alert alert-danger">{{ error.message|trans }}</div>
+    {% endif %}
+<form action="{{ path('login_check') }}" class="form-signin" id="formulario" role="form" method="post">
+    <input type="text" id="_username" name="_username" class="form-control username-box" placeholder="Nombre de Usuario" value="{{ last_username }}" autofocus="" autocomplete="off">
+    <input type="password" id="_password" name="_password" class="form-control password-box" placeholder="Contraseña" autocomplete="off">
+    <label class="checkbox">
+    </label>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Entrar</button>
+</form>
+{% endblock %}
