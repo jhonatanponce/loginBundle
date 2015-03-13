@@ -1,12 +1,18 @@
 Tutorial: mini-backend de usuarios con Doctrine
+========================
+
 Uno de los aspectos más importantes en el desarrollo de cualquier aplicación es la Seguridad de acceso, para ello Symfony 2 dispone de una moderna librería que se encarga de las validaciones de acceso y seguridad.
 Una de las opciones más tentadoras es utilizar Doctrine como proveedor de los Usuarios, con el cual podamos crear Roles y Usuarios desde CRUD’s elaborados por el mismo framework y crear nuestro propio esquema de seguridad, debo resaltar que existen muchos Bundles prefabricados como el FOSUserBundle que facilitan enormemente ésta tarea, pero si quieres profundizar puedes seguir el siguiente tutorial para conocer a fondo como se hace desde 0 con Doctrine .
 
 Paso 1: Crea las entidades básicas
+----------------------------------------------------------------------------
 
 Antes de empezar debemos de definir las entidades básicas para ser utilizadas como proveedor de usuarios y roles en Sf2, dichas entidades User y Role deben de implementar las interfaces Symfony\Component\Security\Core\User\UserInterface y Symfony\Component\Security\Core\Role\RoleInterface respectivamente, así que añade estas 2 entidades a tu directorio “loginbundle/src/Test/LoginBundle/Entity;”:
 
-User.php:
+### User.php:
+
+```
+#!php
 
 <?php
 namespace Test\LoginBundle\Entity;
@@ -192,7 +198,13 @@ public function eraseCredentials() {
 	 
 }
 }
-Role.php:
+
+```
+
+### Role.php:
+
+```
+#!php
 
 <?php
  
@@ -261,24 +273,33 @@ public function __toString() {
 	return $this->getRole();
 }
 }
-Una vez creadas nuestras entidades, accedemos a la consola de Symfony2 y generamos las tablas en Base de Datos:
 
+```
+Una vez creadas nuestras entidades, accedemos a la consola de Symfony2 y generamos las tablas en Base de Datos:
+```
+#!php
 	$ app/console doctrine:schema:update –force
+```
 Paso 2: Generando los CRUD’s
+----------------------------------------------------------------------------
 
 Una vez creadas las entidades en DB, procedemos a crear los CRUD’s desde la consola de symfony:
-
+```
+#!php
 	$ app/console doctrine:generate:crud
+```
 Seguimos los pasos colocando TestLoginBundle:Role, luego nos solicita si deseamos crear las opciones de escritura, le decimos “yes” (sí), formato del CRUD: annotation, y finalmente en el Routes prefix colocamos /admin/role, este paso es importante porque a la ruta le asignamos el prefijo /admin para que nos permita empatar luego con el access_control, confirmamos y aparecerá el mensaje “You can now start using the generated code!”
 
 Procedemos a aplicar lo mismo pero en este caso con TestLoginBundle:User y en Routes prefix colocamos /admin/user
 
 Ahora añadiremos las rutas a nuestro archivo de rutas (loginbundle/src/Test/LoginBundle/Resources/Config/routing.yml),
-
+```
+#!php
 	TestAnnotations:
 		resource: “@TestLoginBundle/Controller/”
 		prefix:   /
 		type:     annotation
+```
 	
 porque al crearlas como Anotaciones las mismas no se añaden automáticamente:
 
@@ -289,6 +310,9 @@ Ya con esto podemos acceder a nuestros crud’s desde localhost/loginbundle/web/
 Primero añadiremos la siguiente función en el controlador de usuarios:
 
 Luego modificamos las funciones de las acciones correspondientes a create y update, añadiendo la llamada al la función anterior para establecer el hash de la contraseña con el algoritmo SHA512:
+
+```
+#!php
 
 // loginbundle/src/Test/LoginBundle/Controller/UserController.php
 
@@ -354,10 +378,12 @@ public function updateAction(Request $request, $id)
 	'delete_form' => $deleteForm->createView(),
 	);
 } 
+```
 
 Luego dentro de este mismo controlado UserController.php agregas la función setSecurePassword:private
 
-
+```
+#!php
 private function setSecurePassword(&$entity) 
 {
 	$entity->setSalt(md5(time()));
@@ -365,9 +391,12 @@ private function setSecurePassword(&$entity)
 	$password = $encoder->encodePassword($entity->getPassword(), $entity->getSalt());
 	$entity->setPassword($password);
 }
+```
 
 Por último sólo nos queda eliminar del formulario (src/Test/LoginBundle/Form/UserType.php) el campo salt el cual no debe ser modificado por el usuario:
 
+```
+#!php
 	
 <?php
 // loginbundle/src/Test/LoginBundle/Form/UserType.php
@@ -382,14 +411,16 @@ public function buildForm(FormBuilderInterface $builder, array $options)
 	->add('user_roles')
 	;
 }
+```
 
 Ahora puedes proceder a registrar usuarios y roles, es muy importante que al menos crees los roles “ROLE_ADMIN” y “ROLE_USER” y dos usuarios (uno con un rol diferente) antes de que procedas en aplicar el esquema de seguridad, de lo contrario no tendrás usuario con que loguearte .
 
 Paso 3: Creando el esquema de seguridad
-
+----------------------------------------------------------------------------
 
 Ahora procedemos a sobreescribir nuestro esquema de seguridad (loginBundle/app/config/security.yml), recomiendo que antes de hacerlo guardes una copia del security.yml.
-
+```
+#!php
 # loginBundle /app/config/security.yml
 security:
     encoders:
@@ -425,6 +456,7 @@ security:
 
     access_control:
       - { path: ^/admin, roles: ROLE_ADMIN }
+```
 
 Como puedes apreciar en “encoders” se ha definido un codificador especifico para la entidad User, utilizando el algoritmo SHA512, además codificandolo en Base64 con 10 iteracciones, tal cual se apreció en la función setSecurePassword del controlador.
 
@@ -437,6 +469,8 @@ Además en “secured_area” se ha eliminado anonymous, se ha establecido “fo
 Para culminar sólo necesitamos crear el controlador y vista para nuestro login, por lo que debes de crear el archivo SecurityController.php en el directorio (loginBundle/src/MDW/BlogBundle/Controller):
 
 SecurityController.php
+```
+#!php
 
 <?php
 // loginBundle/src/Test/LoginBundle/Controller/SecurityController.php
@@ -486,12 +520,14 @@ class SecurityController extends Controller
         
     }
 }
+```
 
 Ahora crea el directorio “Security” dentro de (loginBundle/src/MDW/BlogBundle/Resources/views) y procede a crear el archivo de vista:
 
 login.html.twig
 
-
+```
+#!php
 {# loginbundle/src/Test/loginBundle/Resources/views/Security/login.html.twig #}
 {% if error %}
 <div>{{ error.message }}</div>
@@ -504,6 +540,7 @@ login.html.twig
  
 <input type=”submit” name=”login” />
 </form>
+```
 
 Y con ello ya puedes intentar acceder a localhost/loginBundle/web/admin/user y probar el sistema de seguridad de Symfony2 (vaciar la caché en el caso de entrar al entorno de producción), si creaste previamente 2 usuarios, intenta acceder con el usuario que no tiene el rol “ROLE_ADMIN” y verás como te niega el acceso, en cambio si pruebas con un usuario con dicho rol, puedes entrar perfectamente.
 
@@ -513,14 +550,10 @@ En esta ocasión apreciamos el complejo sistema de seguridad de Symfony2, en don
 
 Además interactuamos con dicho sistema a través de un “rápido” tutorial que nos permitió resolver las inquietudes más directas en cuanto a creación de un básico RBAC (Role-based Access Control), reitero que no es la única forma de hacerlo y que existen muchos Bundles Prefabricados como el FOSUserBundle que nos facilita enormemente ésta tarea, pero si no se conoce debidamente la base puede resultar una verdadera caja negra el usar un Bundle sin el previo conocimiento de como Symfony2 implementa tales mecanismos.
 
-Información Adicional
-
-Además de este tutorial, cree un repositorio con la funcionalidad y con estilos de bootstrap 3, puedes revisarlo haciendo clic en el siguiente enlace: 
-
-Repositorio
-
-
+```
+#!php
 Usuario Administrador: admin
 Password Usuario Administrador: uprueba1
 Usuario: user
 Password Usuario: uprueba2
+```
